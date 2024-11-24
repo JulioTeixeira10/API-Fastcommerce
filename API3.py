@@ -2,6 +2,7 @@
 import requests
 import datetime
 import os
+import sys
 from stat import S_IREAD, S_IRGRP, S_IROTH, S_IWUSR
 import urllib.parse
 from configparser import ConfigParser
@@ -95,9 +96,9 @@ def LockLogFile(): #Função bloquear o arquivo de log
         pass
 
 #Diretorios
-dirLog = "C:\\Bancamais\\Fastcommerce\\Log" #Diretorio do arquivo de LOG
-dirXML = "C:\\Bancamais\\Fastcommerce\\XML" #Diretorio do arquivo XML
-dirErros = "C:\\Bancamais\\Fastcommerce\\Erros" #Diretorio dos arquivos de erro
+dirLog = "C:\\Bancamais\\Fastcommerce\\Logs\\LogFast" #Diretorio do arquivo de LOG
+dirXML = "C:\\Bancamais\\Fastcommerce\\XMLs\\XMLFast" #Diretorio do arquivo XML
+dirErros = "C:\\Bancamais\\Fastcommerce\\Erros\\ErrosFast" #Diretorio dos arquivos de erro
 dirDados = "C:\\Bancamais\\Fastcommerce\\DadosLoja" #Diretorio do arquivo de dados da loja
 
 #Administração do arquivo .cfg
@@ -127,7 +128,7 @@ except FileNotFoundError: #tratamento de erro se o XML não for encontrado
     file.write(time)
     file.write(" - XML NÃO encontrado.")
     file.close()
-    exit()
+    sys.exit()
 str = textoxml.read()
 new = urllib.parse.quote(str)
 xmlrecord = new
@@ -150,7 +151,7 @@ except: #Tratamento de erro em caso de que o usuario não tenha internet ou a da
     file.write(time)
     file.write("\n \nERRO de CONEXÃO ou de CERTIFICADO SSL. Se asegure de que seu PC está conectado à internet e que a data não esteja muito adiantada. ")
     file.close()
-    exit()
+    sys.exit()
 
 #Script para checar erros na request
 checkresponse = response.text
@@ -173,7 +174,7 @@ if COMANDO == 0: #tratamento de erro se não existir nenhum registro no XML
     file.write(time)
     file.write(" - [ERRO XML] - O XML recebido NÃO contém nenhum registro. \n")
     LockLogFile()
-    exit()
+    sys.exit()
 
 #Função para calcular quantos registros foram válidos e quantos não
 Validvalueindex = checkresponse.find('Valid="')
@@ -236,4 +237,4 @@ file.write("\n")
 file.close()
 LockLogFile()
 
-exit()
+sys.exit()
